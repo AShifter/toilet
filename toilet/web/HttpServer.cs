@@ -43,13 +43,8 @@ namespace toilet.Web
                 HttpListenerResponse resp = ctx.Response;
 
                 // Print out some info about the request
-                Console.WriteLine(req.Url.ToString());
-                Console.WriteLine(req.Url.AbsolutePath);
-                Console.WriteLine(req.HttpMethod);
-                Console.WriteLine(req.UserHostName);
-                Console.WriteLine(req.Url.Query);
+                Console.WriteLine($"HTTP {req.HttpMethod} Request from {req.RemoteEndPoint} at {req.Url}");
                 Console.WriteLine(req.UserAgent);
-                Console.WriteLine(req.Url.PathAndQuery);
                 Console.WriteLine();
 
                 byte[] data;
@@ -66,11 +61,6 @@ namespace toilet.Web
                 {
                     try
                     {
-                        foreach (string acceptable in req.AcceptTypes)
-                        {
-                            Console.WriteLine((acceptable));
-                        }
-
                         Task fileUploadTask = ParseFiles(req.InputStream, "multipart/form-data", fsPath);
                         fileUploadTask.GetAwaiter().GetResult();
                     }
