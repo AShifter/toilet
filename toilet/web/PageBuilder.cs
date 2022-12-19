@@ -27,6 +27,7 @@ namespace toilet.Web
 
             _htmlBuilder.Append($"</pre><hr><i>toilet/0.0.1 server at {HttpServer.listener.Prefixes.First()}</i><hr>"+
                                 $"<form method=\"POST\" action=\"{displayPath}\" enctype=\"multipart/form-data\"><input type=\"file\" name=\"fileUpload\"><input type=\"submit\" value=\"Upload File\"></form>" +
+                                $"<form method=\"GET\" action=\"{displayPath}\"><input type=\"text\" name=\"newFolderDir\"><input type=\"submit\" Value=\"New Folder\"></form>" +
                                 "</body></html>");
 
             return _htmlBuilder.ToString();

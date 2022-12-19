@@ -47,11 +47,21 @@ namespace toilet.Web
                 Console.WriteLine(req.Url.AbsolutePath);
                 Console.WriteLine(req.HttpMethod);
                 Console.WriteLine(req.UserHostName);
+                Console.WriteLine(req.Url.Query);
                 Console.WriteLine(req.UserAgent);
+                Console.WriteLine(req.Url.PathAndQuery);
                 Console.WriteLine();
 
                 byte[] data;
+                string fsPath = HttpUtility.UrlDecode($".{req.Url.AbsolutePath}");
                 
+                // Check to see if new folder parameter was provided in request URL
+                if (req.Url.Query != "" && req.Url.PathAndQuery.Split("?")[1].Contains("newFolderDir"))
+                {
+                    Directory.CreateDirectory($"{fsPath}/{req.Url.PathAndQuery.Split("=")[1]}");
+                }
+
+                // Check to see if request is file upload POST                
                 if (req.HttpMethod == "POST")
                 {
                     try
@@ -61,7 +71,7 @@ namespace toilet.Web
                             Console.WriteLine((acceptable));
                         }
 
-                        Task fileUploadTask = ParseFiles(req.InputStream, "multipart/form-data");
+                        Task fileUploadTask = ParseFiles(req.InputStream, "multipart/form-data", fsPath);
                         fileUploadTask.GetAwaiter().GetResult();
                     }
                     catch(Exception e)
@@ -82,8 +92,6 @@ namespace toilet.Web
                 // Write the response info
                 try
                 {
-                    string fsPath = HttpUtility.UrlDecode($".{req.Url.AbsolutePath}");
-
                     if (File.Exists(fsPath))
                     {
                         // if the URI points to a file on disk, read that file.
@@ -119,7 +127,7 @@ namespace toilet.Web
             }
         }
         
-        public static async Task ParseFiles(Stream data, string contentType)
+        public static async Task ParseFiles(Stream data, string contentType, string fsPath)
         {
             // Read the request stream into memory
             MemoryStream memoryStream = new MemoryStream();
@@ -141,8 +149,8 @@ namespace toilet.Web
             buffer = bytes.ToArray();
             
             // Write data to file
-            File.WriteAllBytes(fileName, buffer);
-        } 
-        
+            Console.WriteLine($"Writing file to {fsPath}/{fileName}");
+            File.WriteAllBytes($"{fsPath}/{fileName}", buffer);
+        }
     }
 }
