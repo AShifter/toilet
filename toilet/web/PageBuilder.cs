@@ -17,7 +17,7 @@ namespace toilet.Web
             foreach (string child in Directory.GetDirectories(path))
             {
                 string dir = child.Substring(1, child.Length - 1);
-                _htmlBuilder.Append($"<a href=\"{dir}\">{dir.Split('/').Last()}/\n</a>");
+                _htmlBuilder.Append($"<a href=\"{dir}/\">{dir.Split('/').Last()}/\n</a>");
             }
             foreach (string child in Directory.GetFiles(path))
             {

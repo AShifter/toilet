@@ -61,7 +61,7 @@ namespace toilet.Web
                 {
                     try
                     {
-                        Task fileUploadTask = ParseFiles(req.InputStream, "multipart/form-data", fsPath);
+                        Task fileUploadTask = ParseFiles(req.InputStream, fsPath);
                         fileUploadTask.GetAwaiter().GetResult();
                     }
                     catch(Exception e)
@@ -117,7 +117,7 @@ namespace toilet.Web
             }
         }
         
-        public static async Task ParseFiles(Stream data, string contentType, string fsPath)
+        public static async Task ParseFiles(Stream data, string fsPath)
         {
             // Read the request stream into memory
             MemoryStream memoryStream = new MemoryStream();
