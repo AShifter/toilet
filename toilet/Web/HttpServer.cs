@@ -43,9 +43,9 @@ namespace toilet.Web
                 HttpListenerResponse resp = ctx.Response;
 
                 // Print out some info about the request
+                Console.WriteLine();
                 Console.WriteLine($"HTTP {req.HttpMethod} Request from {req.RemoteEndPoint} at {req.Url}");
                 Console.WriteLine(req.UserAgent);
-                Console.WriteLine();
 
                 byte[] data;
                 string fsPath = HttpUtility.UrlDecode($".{req.Url.AbsolutePath}");
@@ -90,7 +90,7 @@ namespace toilet.Web
                     else
                     {
                         // if not, generate a directory listing
-                        data = Encoding.UTF8.GetBytes(String.Format(pageBuilder.GetDirectoryListing(fsPath)));
+                        data = Encoding.UTF8.GetBytes(pageBuilder.GetDirectoryListing(fsPath));
                     }
                 
                     resp.StatusCode = 200;
@@ -126,6 +126,12 @@ namespace toilet.Web
 
             // Get filename
             string fileName = Encoding.UTF8.GetString(buffer).Split("\r\n")[1].Split("filename=\"")[1].Replace("\"", "");
+
+            if (fileName == string.Empty)
+            {
+                Console.WriteLine("File name empty, nothing to do");
+                return;
+            }
 
             // Strip extra parts of the request to get binary data
             string stringBuffer = Encoding.UTF8.GetString(buffer);
