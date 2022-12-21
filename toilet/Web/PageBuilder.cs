@@ -10,18 +10,25 @@ namespace toilet.Web
             // This entire file is absolutely disgusting
             string displayPath = path.Substring(1, path.Length - 1);
             _htmlBuilder.Clear();
-            _htmlBuilder.Append($"<!DOCTYPE html><html style=\"height: 100vh;\"><head><title>Index of {displayPath} - toilet</title><link rel=\"stylesheet\" href=\"https://bootswatch.com/5/flatly/bootstrap.min.css\"></head><body style=\"height: 100%; background-attachment: fixed;\" id=\"drop_zone\" ondrop=\"dropHandler(event);\" ondragover=\"dragOverHandler(event);\">");
+            _htmlBuilder.Append($"<!DOCTYPE html><html style=\"height: 100vh;\"><head><title>Index of {displayPath} - toilet</title><link rel=\"stylesheet\" href=\"https://bootswatch.com/5/vapor/bootstrap.min.css\"></head><body style=\"height: 100%; background-attachment: fixed;\" id=\"drop_zone\" ondrop=\"dropHandler(event);\" ondragover=\"dragOverHandler(event);\">");
             _htmlBuilder.Append($"<nav class=\"navbar navbar-expand-lg navbar-dark bg-primary\"><p class=\"text-white\" style=\"margin: auto; text-align: center;\">Index of {displayPath} - toilet</h1></nav><div class=\"container\" style=\"padding:20px;\">");
             _htmlBuilder.Append($"<div class=\"card border-primary\"><table style=\"margin-bottom: 0;\" class=\"table table-hover\">");
             _htmlBuilder.Append("<thead><tr class=\"card-header\"><th scope=\"col\">Name</th><th scope=\"col\">Created</th><th scope=\"col\">Size</th></tr></thead>");
             _htmlBuilder.Append($"<tbody><tr><th scope=\"row\"><a href=\"../\">../\n</a></th><td>-</td><td>-</td></tr>");
 
-            foreach (string child in Directory.GetDirectories(path))
+            string[] directories = Directory.GetDirectories(path);
+            Array.Sort(directories, StringComparer.CurrentCultureIgnoreCase);
+
+            foreach (string child in directories)
             {
                 string dir = child.Substring(1, child.Length - 1);
                 _htmlBuilder.Append($"<tbody><tr><th scope=\"row\"><a href=\"{dir}/\">{dir.Split('/').Last()}/\n</a></th><td>{Directory.GetCreationTime(child)}</td><td>-</td></tr>");
             }
-            foreach (string child in Directory.GetFiles(path))
+            
+            string[] files = Directory.GetFiles(path);
+            Array.Sort(files, StringComparer.CurrentCultureIgnoreCase);
+            
+            foreach (string child in files)
             {
                 string file = child.Substring(1, child.Length - 1);
                 _htmlBuilder.Append($"<tbody><tr><th scope=\"row\"><a href=\"{file}\">{file.Split('/').Last()}\n</a></th><td>{File.GetCreationTime($"{path}/{file}").ToString()}</td><td>-</td></tr>");
