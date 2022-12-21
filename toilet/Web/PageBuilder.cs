@@ -7,28 +7,30 @@ namespace toilet.Web
         private StringBuilder _htmlBuilder = new();
         public string GetDirectoryListing(string path)
         {
+            // This entire file is absolutely disgusting
             string displayPath = path.Substring(1, path.Length - 1);
             _htmlBuilder.Clear();
-            _htmlBuilder.Append($"<!DOCTYPE html><html style=\"height: 90%; padding: 8px;\"<head><title>Index of {displayPath}</title></head><body style=\"height: 100%; margin: 0px;\" id=\"drop_zone\" ondrop=\"dropHandler(event);\" ondragover=\"dragOverHandler(event);\">");
-            _htmlBuilder.Append($"<h1>Index of {displayPath}</h1><hr>");
-            _htmlBuilder.Append("<pre>");
-            _htmlBuilder.Append($"<a href=\"../\">../\n</a>");
-        
+            _htmlBuilder.Append($"<!DOCTYPE html><html style=\"height: 100vh;\"><head><title>Index of {displayPath} - toilet</title><link rel=\"stylesheet\" href=\"https://bootswatch.com/5/flatly/bootstrap.min.css\"></head><body style=\"height: 100%; background-attachment: fixed;\" id=\"drop_zone\" ondrop=\"dropHandler(event);\" ondragover=\"dragOverHandler(event);\">");
+            _htmlBuilder.Append($"<nav class=\"navbar navbar-expand-lg navbar-dark bg-primary\"><p class=\"text-white\" style=\"margin: auto; text-align: center;\">Index of {displayPath} - toilet</h1></nav><div class=\"container\" style=\"padding:20px;\">");
+            _htmlBuilder.Append($"<div class=\"card border-primary\"><table style=\"margin-bottom: 0;\" class=\"table table-hover\">");
+            _htmlBuilder.Append("<thead><tr class=\"card-header\"><th scope=\"col\">Name</th><th scope=\"col\">Created</th><th scope=\"col\">Size</th></tr></thead>");
+            _htmlBuilder.Append($"<tbody><tr><th scope=\"row\"><a href=\"../\">../\n</a></th><td>-</td><td>-</td></tr>");
+
             foreach (string child in Directory.GetDirectories(path))
             {
                 string dir = child.Substring(1, child.Length - 1);
-                _htmlBuilder.Append($"<a href=\"{dir}/\">{dir.Split('/').Last()}/\n</a>");
+                _htmlBuilder.Append($"<tbody><tr><th scope=\"row\"><a href=\"{dir}/\">{dir.Split('/').Last()}/\n</a></th><td>{Directory.GetCreationTime(child)}</td><td>-</td></tr>");
             }
             foreach (string child in Directory.GetFiles(path))
             {
                 string file = child.Substring(1, child.Length - 1);
-                _htmlBuilder.Append($"<a href=\"{file}\">{file.Split('/').Last()}\n</a>");
+                _htmlBuilder.Append($"<tbody><tr><th scope=\"row\"><a href=\"{file}\">{file.Split('/').Last()}\n</a></th><td>{File.GetCreationTime($"{path}/{file}").ToString()}</td><td>-</td></tr>");
             }
 
-            _htmlBuilder.Append($"</pre><hr><i>toilet/0.0.1 server at {HttpServer.listener.Prefixes.First()}</i><hr>"+
-                                $"<form method=\"POST\" action=\"{displayPath}\" enctype=\"multipart/form-data\"><input type=\"file\" name=\"fileUpload\"><input type=\"submit\" value=\"Upload File\"></form>" +
-                                $"<form method=\"GET\" action=\"{displayPath}\"><input type=\"text\" name=\"newFolderDir\"><input type=\"submit\" Value=\"New Folder\"></form>" +
-                                "</body></html>");
+            _htmlBuilder.Append($"</tbody></table><div class=\"card-footer\" style=\"display: flex; border-top: 0; padding-top: 20px;\">"+
+                                $"<div style=\"flex: 1; padding-right: 8px;\"><form class=\"input-group mb-3\" method=\"POST\" action=\"{displayPath}\" enctype=\"multipart/form-data\"><input class=\"form-control\" type=\"file\" name=\"fileUpload\"><input class=\"btn btn-primary\" type=\"submit\" value=\"Upload File\"></form></div>" +
+                                $"<div style=\"flex: 1; text-align: right; padding-left: 8px;\"><form class=\"input-group mb-3\" method=\"GET\" action=\"{displayPath}\"><input class=\"form-control\" type=\"text\" name=\"newFolderDir\" placeholder=\"Folder name\"><input class=\"btn btn-primary\" type=\"submit\" Value=\"New Folder\"></form></div>" +
+                                $"</div></div><hr><p class=\"text-muted\" style=\"margin: auto; text-align: center;\">toilet server at {HttpServer.listener.Prefixes.First()}</p><hr></div></body></html>");
 
             return _htmlBuilder.ToString();
         }

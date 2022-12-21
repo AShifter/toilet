@@ -53,7 +53,7 @@ namespace toilet.Web
                 // Check to see if new folder parameter was provided in request URL
                 if (req.Url.Query != "" && req.Url.PathAndQuery.Split("?")[1].Contains("newFolderDir"))
                 {
-                    Directory.CreateDirectory($"{fsPath}/{req.Url.PathAndQuery.Split("=")[1]}");
+                    Directory.CreateDirectory($"{fsPath}/{HttpUtility.UrlDecode(req.Url.PathAndQuery.Split("=")[1])}");
                 }
 
                 // Check to see if request is file upload POST                
