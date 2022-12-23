@@ -52,7 +52,7 @@ namespace toilet.Web
                                     $"<th style=\"max-width: 1px;\" scope=\"row\">" +
                                         $"<a href=\"{file}\"><span style=\"display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis\">{file.Split('/').Last()}</span></a>" +
                                     $"</th>" +
-                                    $"<td style=\"width: 15%;\" class=\"text-muted\">{File.GetLastWriteTime($"{path}/{file}").ToString("yyyy-MM-dd HH:mm")}</td>" +
+                                    $"<td style=\"width: 15%;\" class=\"text-muted\">{File.GetLastWriteTime(file).ToString("yyyy-MM-dd HH:mm")}</td>" +
                                     $"<td style=\"width: 10%;\" class=\"text-muted\">{GetFileSize(new FileInfo(child).Length)}</td>" +
                                 $"</tr>" +
                             $"</tbody>");
