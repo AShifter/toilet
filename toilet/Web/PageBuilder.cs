@@ -29,7 +29,15 @@ namespace toilet.Web
             foreach (string child in directories)
             {
                 string dir = child.Substring(1, child.Length - 1);
-                html.Append($"<tbody><tr><th scope=\"row\"><a href=\"{dir}/\">{dir.Split('/').Last()}/\n</a></th><td class=\"text-muted\">{Directory.GetLastWriteTime(child).ToString("yyyy-MM-dd HH:mm")}</td><td class=\"text-muted\">-</td></tr></tbody>");
+                html.Append($"<tbody title=\"{dir}\">" +
+                                $"<tr>" +
+                                    $"<th style=\"max-width: 1px;\" scope=\"row\">" +
+                                        $"<a href=\"{dir}/\">{dir.Split('/').Last()}/\n</a>" +
+                                    $"</th>" +
+                                    $"<td style=\"width: 15%;\" class=\"text-muted\">{Directory.GetLastWriteTime(child).ToString("yyyy-MM-dd HH:mm")}</td>" +
+                                    $"<td style=\"width: 10%;\" class=\"text-muted\">-</td>" +
+                                $"</tr>" +
+                            $"</tbody>");
             }
             
             string[] files = Directory.GetFiles(path);
@@ -39,7 +47,15 @@ namespace toilet.Web
             {
                 string file = child.Substring(1, child.Length - 1);
                 if(file == "/favicon.ico") { continue; }
-                html.Append($"<tbody><tr><th scope=\"row\"><a href=\"{file}\">{file.Split('/').Last()}\n</a></th><td class=\"text-muted\">{File.GetLastWriteTime($"{path}/{file}").ToString("yyyy-MM-dd HH:mm")}</td><td class=\"text-muted\">{GetFileSize(new FileInfo(child).Length)}</td></tr></tbody>");
+                html.Append($"<tbody title=\"{file}\">" +
+                                $"<tr>" +
+                                    $"<th style=\"max-width: 1px;\" scope=\"row\">" +
+                                        $"<a href=\"{file}\"><span style=\"display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis\">{file.Split('/').Last()}</span></a>" +
+                                    $"</th>" +
+                                    $"<td style=\"width: 15%;\" class=\"text-muted\">{File.GetLastWriteTime($"{path}/{file}").ToString("yyyy-MM-dd HH:mm")}</td>" +
+                                    $"<td style=\"width: 10%;\" class=\"text-muted\">{GetFileSize(new FileInfo(child).Length)}</td>" +
+                                $"</tr>" +
+                            $"</tbody>");
             }
 
             return html.ToString();
