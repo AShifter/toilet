@@ -12,6 +12,8 @@ namespace toilet.Web
         public static HttpListener listener;
 
         public PageBuilder pageBuilder = new();
+        
+        public int reqCounter = 0;
 
         public void StartServer(string ip, int port)
         {
@@ -117,11 +119,12 @@ namespace toilet.Web
             }
         }
         
-        public static async Task ParseFiles(Stream data, string fsPath)
+        public async Task ParseFiles(Stream data, string fsPath)
         {
             // Read the request stream into memory
             MemoryStream memoryStream = new MemoryStream();
             data.CopyTo(memoryStream);
+            
             byte[] buffer = memoryStream.ToArray();
 
             // Get filename

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100vh;">
+    <head>
+        <title>Index of <!-- {{InsertCurrentPath}} --> - toilet</title>
+        <meta charset="UTF-8">
+        <style><!-- {{InsertStyles}} --></style>   
+        <style>
+            :root {
+                --bg-color: #ffffff;
+                --bg-secondary-color: #f3f3f6;
+                --color-primary: #14854F;
+                --color-lightGrey: #d2d6dd;
+                --color-grey: #747681;
+                --color-darkGrey: #3f4144;
+                --color-error: #d43939;
+                --color-success: #28bd14;
+                --grid-maxWidth: 120rem;
+                --grid-gutter: 2rem;
+                --font-size: 1.6rem;
+                --font-color: #333333;
+                --font-family-sans: sans-serif;
+                --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
+            }
+        </style>
+    </head>
+    <body id="drop_zone" ondragover="dragOverHandler(event);" ondrop="dropHandler(event);" style="height: 100%; background-attachment: fixed;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <p class="text-white" style="margin: auto; text-align: center;">Index of <!-- {{InsertCurrentPath}} --> - toilet</p>
+        </nav>
+        <div class="container" style="padding:20px;">
+            <div class="card border-primary">
+                <table class="table table-hover" style="margin-bottom: 0;">
+                    <thead>
+                    <tr class="card-header">
+                        <th scope="col">Name</th>
+                        <th scope="col">Last Modified</th>
+                        <th scope="col">Size</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row"><a href="../">../</a></th>
+                        <td class="text-muted">-</td>
+                        <td class="text-muted">-</td>
+                    </tr>
+                    </tbody>
+                    <!-- {{InsertDirectoryList}} -->
+                </table>
+                <div class="card-footer" style="display: flex; border-top: 0; padding-top: 20px;">
+                    <div style="flex: 1; padding-right: 8px;">
+                        <form action="/" class="input-group mb-3" enctype="multipart/form-data" method="POST">
+                            <input class="form-control" id="fileUpload" name="fileUpload" type="file">
+                            <input class="btn btn-primary" type="submit" value="Upload File">
+                        </form>
+                    </div>
+                    <div style="flex: 1; text-align: right; padding-left: 8px;">
+                        <form action="/" class="input-group mb-3" method="GET">
+                            <input class="form-control" name="newFolderDir" placeholder="Folder name" type="text">
+                            <input class="btn btn-primary" type="submit" value="New Folder">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <p class="text-muted" style="margin: auto; text-align: center;">toilet server at <!-- {{InsertHost}} --></p>
+            <hr>
+        </div>
+    </body>
+</html>
