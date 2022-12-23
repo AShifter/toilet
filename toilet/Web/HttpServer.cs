@@ -68,7 +68,7 @@ namespace toilet.Web
                     }
                     catch(Exception e)
                     {
-                        data = Encoding.UTF8.GetBytes($"<!DOCTYPE html>400 Bad Request. Internal Exception: {e}");
+                        data = Encoding.UTF8.GetBytes(pageBuilder.GetErrorPage(fsPath, "400 Bad Request", e));
                     
                         resp.ContentType = "text/html";
                         resp.StatusCode = 400;
@@ -105,7 +105,7 @@ namespace toilet.Web
                 }
                 catch(Exception e)
                 {
-                    data = Encoding.UTF8.GetBytes(pageBuilder.GetNotFoundPage(fsPath, e));
+                    data = Encoding.UTF8.GetBytes(pageBuilder.GetErrorPage(fsPath, "404 Not Found", e));
                     
                     resp.ContentType = "text/html";
                     resp.StatusCode = 404;
@@ -149,7 +149,15 @@ namespace toilet.Web
             
             // Write data to file
             Console.WriteLine($"Writing file to {fsPath}/{fileName}");
+
             File.WriteAllBytes($"{fsPath}/{fileName}", buffer);
+            
+            /*
+            using (FileStream stream = new FileStream($"{fsPath}/{fileName}", FileMode.Append)) 
+            {
+                stream.Write(buffer, 0, buffer.Length);           
+            }
+            */
         }
     }
 }

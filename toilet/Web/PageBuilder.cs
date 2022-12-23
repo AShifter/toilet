@@ -19,7 +19,7 @@ namespace toilet.Web
             return _htmlBuilder.ToString();
         }
         
-        public string GetNotFoundPage(string path, Exception e)
+        public string GetErrorPage(string path, string error, Exception e)
         {
             _htmlBuilder.Clear();
             _htmlBuilder.Append(TemplateResources.NotFoundTemplate);
@@ -27,6 +27,8 @@ namespace toilet.Web
             _htmlBuilder.Replace("<!-- {{InsertException}} -->", e.ToString());
             _htmlBuilder.Replace("<!-- {{InsertCurrentPath}} -->", path.Substring(1, path.Length - 1));
             _htmlBuilder.Replace("<!-- {{InsertHost}} -->", HttpServer.listener.Prefixes.First());
+            _htmlBuilder.Replace("<!-- {{InsertError}} -->", error);
+                
             
 
             return _htmlBuilder.ToString();
@@ -65,7 +67,7 @@ namespace toilet.Web
                                     $"<th style=\"max-width: 1px;\" scope=\"row\">" +
                                         $"<a href=\"{file}\"><span style=\"display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis\">{file.Split('/').Last()}</span></a>" +
                                     $"</th>" +
-                                    $"<td style=\"width: 15%;\" class=\"text-muted\">{File.GetLastWriteTime(file).ToString("yyyy-MM-dd HH:mm")}</td>" +
+                                    $"<td style=\"width: 15%;\" class=\"text-muted\">{File.GetLastWriteTime(child).ToString("yyyy-MM-dd HH:mm")}</td>" +
                                     $"<td style=\"width: 10%;\" class=\"text-muted\">{GetFormattedFileSize(new FileInfo(child).Length)}</td>" +
                                 $"</tr>" +
                             $"</tbody>");
@@ -103,7 +105,7 @@ namespace toilet.Web
     public static class TemplateResources
     {
         public static string HtmlTemplate = GetEmbeddedResource("toilet.Web.Page", "index.html");
-        public static string NotFoundTemplate = GetEmbeddedResource("toilet.Web.Page", "notfound.html");
+        public static string NotFoundTemplate = GetEmbeddedResource("toilet.Web.Page", "error.html");
         public static string StyleTemplate = GetEmbeddedResource("toilet.Web.Page", "styles.css");
         public static string GetEmbeddedResource(string namespacename, string filename)
         {

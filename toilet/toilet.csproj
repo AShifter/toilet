@@ -18,7 +18,7 @@
       <None Include="Web\Page\styles.css.old" />
       <None Remove="Web\Page\styles.css" />
       <None Remove="Web\Page\notfound.html" />
-      <EmbeddedResource Include="Web\Page\notfound.html" />
+      <EmbeddedResource Include="Web\Page\error.html" />
     </ItemGroup>
 
     <ItemGroup>

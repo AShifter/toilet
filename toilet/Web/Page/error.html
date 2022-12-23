@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>404 at <!-- {{InsertCurrentPath}} --> - toilet</title>
+        <title><!-- {{InsertError}} --> at <!-- {{InsertCurrentPath}} --> - toilet</title>
         <meta charset="UTF-8">
         <style><!-- {{InsertStyles}} --></style>
     </head>
     <body id="drop_zone" ondragover="dragOverHandler(event);" ondrop="dropHandler(event);" style="height: 100%; background-attachment: fixed;">
         <nav class="navbar sticky-top navbar-dark bg-primary">
-            <p class="text-white" style="margin: auto; text-align: center;">404 at <!-- {{InsertCurrentPath}} --> - toilet</p>
+            <p class="text-white" style="margin: auto; text-align: center;"><!-- {{InsertError}} --> at <!-- {{InsertCurrentPath}} --> - toilet</p>
         </nav>
         <div class="container" style="padding:20px;">
             <div class="card border-primary">
                 <div class="card-header">
-                    <b>404 Not Found</b>
+                    <b><!-- {{InsertCurrentPath}} --></b>
                 </div>
                 <div class="card-body">
-                    <p>The requested resource <!-- {{InsertCurrentPath}} --> was not found on the server. <a href="/">Click here to go home.</a></p>
+                    <p>The server returned an error <b><!-- {{InsertError}} --></b> at requested resource <b><!-- {{InsertCurrentPath}} --></b>. <a href="/">Click here to go home.</a></p>
                     <code>Internal Exception: <!-- {{InsertException}} --></code>
                 </div>
             </div>
