@@ -18,6 +18,19 @@ namespace toilet.Web
 
             return _htmlBuilder.ToString();
         }
+        
+        public string GetNotFoundPage(string path, Exception e)
+        {
+            _htmlBuilder.Clear();
+            _htmlBuilder.Append(TemplateResources.NotFoundTemplate);
+            _htmlBuilder.Replace("<!-- {{InsertStyles}} -->", TemplateResources.StyleTemplate);
+            _htmlBuilder.Replace("<!-- {{InsertException}} -->", e.ToString());
+            _htmlBuilder.Replace("<!-- {{InsertCurrentPath}} -->", path.Substring(1, path.Length - 1));
+            _htmlBuilder.Replace("<!-- {{InsertHost}} -->", HttpServer.listener.Prefixes.First());
+            
+
+            return _htmlBuilder.ToString();
+        }
 
         private string QueryFolder(string path)
         {
@@ -53,7 +66,7 @@ namespace toilet.Web
                                         $"<a href=\"{file}\"><span style=\"display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis\">{file.Split('/').Last()}</span></a>" +
                                     $"</th>" +
                                     $"<td style=\"width: 15%;\" class=\"text-muted\">{File.GetLastWriteTime(file).ToString("yyyy-MM-dd HH:mm")}</td>" +
-                                    $"<td style=\"width: 10%;\" class=\"text-muted\">{GetFileSize(new FileInfo(child).Length)}</td>" +
+                                    $"<td style=\"width: 10%;\" class=\"text-muted\">{GetFormattedFileSize(new FileInfo(child).Length)}</td>" +
                                 $"</tr>" +
                             $"</tbody>");
             }
@@ -61,7 +74,7 @@ namespace toilet.Web
             return html.ToString();
         }
 
-        private string GetFileSize(long fileLength)
+        private string GetFormattedFileSize(long fileLength)
         {
             if (fileLength / (double)1000000000000 > 1)
             {
@@ -90,6 +103,7 @@ namespace toilet.Web
     public static class TemplateResources
     {
         public static string HtmlTemplate = GetEmbeddedResource("toilet.Web.Page", "index.html");
+        public static string NotFoundTemplate = GetEmbeddedResource("toilet.Web.Page", "notfound.html");
         public static string StyleTemplate = GetEmbeddedResource("toilet.Web.Page", "styles.css");
         public static string GetEmbeddedResource(string namespacename, string filename)
         {

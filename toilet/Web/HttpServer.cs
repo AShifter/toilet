@@ -105,7 +105,7 @@ namespace toilet.Web
                 }
                 catch(Exception e)
                 {
-                    data = Encoding.UTF8.GetBytes($"<!DOCTYPE html>404 Not Found. Internal Exception: {e}");
+                    data = Encoding.UTF8.GetBytes(pageBuilder.GetNotFoundPage(fsPath, e));
                     
                     resp.ContentType = "text/html";
                     resp.StatusCode = 404;

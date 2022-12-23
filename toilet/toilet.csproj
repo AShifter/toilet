@@ -15,6 +15,13 @@
       <None Remove="Web\Page\index.html" />
       <EmbeddedResource Include="Web\Page\index.html" />
       <None Remove="Web\Page\bootstrap.min.css" />
+      <None Include="Web\Page\styles.css.old" />
+      <None Remove="Web\Page\styles.css" />
+      <None Remove="Web\Page\notfound.html" />
+      <EmbeddedResource Include="Web\Page\notfound.html" />
+    </ItemGroup>
+
+    <ItemGroup>
       <EmbeddedResource Include="Web\Page\styles.css" />
     </ItemGroup>
 
