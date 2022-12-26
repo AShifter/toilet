@@ -86,22 +86,29 @@ namespace toilet.Web
                 {
                     if (File.Exists(fsPath))
                     {
+                        resp.StatusCode = 200;
+                        resp.ContentEncoding = Encoding.UTF8;
+                        resp.ContentLength64 = new FileInfo(fsPath).Length;
+                        
                         // if the URI points to a file on disk, read that file.
-                        data = File.ReadAllBytes(fsPath);
+                        using(Stream source = File.OpenRead(fsPath))
+                        {
+                            byte[] buffer = new byte[8192];
+                            int bytesRead;
+                            while((bytesRead = source.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                await resp.OutputStream.WriteAsync(buffer, 0, bytesRead);
+                            }
+                        }
+                        
+                        resp.Close();
+                        //data = File.ReadAllBytes(fsPath);
                     }
                     else
                     {
                         // if not, generate a directory listing
                         data = Encoding.UTF8.GetBytes(pageBuilder.GetDirectoryListing(fsPath));
                     }
-                
-                    resp.StatusCode = 200;
-                    resp.ContentEncoding = Encoding.UTF8;
-                    resp.ContentLength64 = data.LongLength;
-                    
-                    // Write out to the response stream (asynchronously), then close it
-                    await resp.OutputStream.WriteAsync(data, 0, data.Length);
-                    resp.Close();
                 }
                 catch(Exception e)
                 {
